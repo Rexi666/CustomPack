@@ -51,8 +51,8 @@ public class CustomPackCommand implements TabExecutor {
                     return true;
                 }
 
-                String url = plugin.getServerPackUrl();
-                String hash = plugin.getServerPackHash();
+                String url = plugin.config.getString("server_pack.url", "");
+                String hash = plugin.config.getString("server_pack.hash", "");
 
                 if (url == null || url.isBlank()) {
                     sender.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.no_special_pack", "&cThis server does not have a special custom texture pack.")));

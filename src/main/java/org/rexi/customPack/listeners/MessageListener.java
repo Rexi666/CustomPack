@@ -28,7 +28,7 @@ public class MessageListener implements PluginMessageListener {
                 String reason = input.readUTF();
 
                 plugin.getLogger().info("Aplicando pack global a " + player.getName() + " (motivo: " + reason + ")");
-                player.setResourcePack(url, hash.isBlank() ? null : hash.getBytes());
+                player.setResourcePack(url, hash.isBlank() ? null : plugin.hexStringToByteArray(hash));
             }
         } catch (IOException e) {
             plugin.getLogger().warning("Error leyendo el mensaje del canal de plugin.");

@@ -6,6 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.rexi.customPack.CustomPack;
 
+import java.util.Set;
+import java.util.UUID;
+
 public class TexturePackCommand implements CommandExecutor {
 
     private final CustomPack plugin;
@@ -31,15 +34,27 @@ public class TexturePackCommand implements CommandExecutor {
             return true;
         }
 
-        String url = plugin.getServerPackUrl();
-        String hash = plugin.getServerPackHash();
-        boolean applyOnJoin = plugin.isApplyOnJoinEnabled();
+        String url = plugin.config.getString("server_pack.url", "");
+        boolean serverpackenabled = plugin.config.getBoolean("server_pack.enabled", true);
+        String hash = plugin.config.getString("server_pack.hash", "");
+        boolean applyOnJoin = plugin.config.getBoolean("server_pack.apply_on_join", true);
 
-        if (url != null && !url.isBlank() && !applyOnJoin) {
-            player.setResourcePack(url, hash.isBlank() ? null : hash.getBytes());
-            player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.player_applied", "&aYou have applied the texture pack!")));
-        } else if (applyOnJoin) {
-            player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.command_block_onjoin", "&cThe texture pack is set to apply on join, you cannot apply it manually.")));
+        if (serverpackenabled) {
+            if (url != null && !url.isBlank() && !applyOnJoin) {
+                Set<UUID> toggled = plugin.getPlayersWithLocalPack();
+                if (toggled.contains(player.getUniqueId())) {
+                    toggled.remove(player.getUniqueId());
+                    player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.special_pack_removed", "&aYou have removed the special texture pack!")));
+                    plugin.requestGlobalPack(player, "removed special pack");
+                    return true;
+                } else {
+                    toggled.add(player.getUniqueId());
+                    player.setResourcePack(url, hash.isBlank() ? null : plugin.hexStringToByteArray(hash));
+                    player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.player_applied_command", "&aYou have applied the texture pack, use the command again to disable the special texture pack!")));
+                }
+            } else if (applyOnJoin) {
+                player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.command_block_onjoin", "&cThe texture pack is set to apply on join, you cannot apply it manually.")));
+            }
         } else {
             player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.no_special_pack", "&cThis server does not have a special custom texture pack.")));
         }

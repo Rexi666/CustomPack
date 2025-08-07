@@ -1,4 +1,7 @@
+global_pack: false # Requires the velocity plugin
+
 server_pack:
+  enabled: true
   url: ""
   hash: ""
   apply_on_join: true #apply on join, if false players can apply it manually with /texturepack
@@ -9,7 +12,9 @@ messages:
   no_console: "&cOnly players can use this command"
   no_permission: "&cYou do not have permission to use this command."
   player_applied: "&aYou have applied the texture pack!"
+  player_applied_command: "&aYou have applied the texture pack, use the command again to disable the special texture pack!"
   no_special_pack: "&cThis server does not have a special custom texture pack."
+  special_pack_removed: "&aYou have removed the special texture pack!"
   command_block_onjoin: "&cThe texture pack is set to apply on join, you cannot apply it manually."
   geyser_players: "&cBedrock players cannot use this command."
   config_reloaded: "&aConfiguration reloaded successfully!"
