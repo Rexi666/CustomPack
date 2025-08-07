@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.rexi.customPack.commands.CustomPackCommand;
 import org.rexi.customPack.commands.TexturePackCommand;
+import org.rexi.customPack.listeners.JoinListener;
 import org.rexi.customPack.listeners.MessageListener;
 
 import java.util.HashSet;
@@ -29,6 +30,8 @@ public final class CustomPack extends JavaPlugin {
 
         getCommand("texturepack").setExecutor(new TexturePackCommand(this));
         getCommand("custompack").setExecutor(new CustomPackCommand(this));
+
+        Bukkit.getPluginManager().registerEvents(new JoinListener(this), this);
 
         Bukkit.getConsoleSender().sendMessage(Component.text("CustomPack has been enabled!").color(NamedTextColor.GREEN));
         Bukkit.getConsoleSender().sendMessage(Component.text("Thank you for using Rexi666 plugins :D").color(NamedTextColor.BLUE));
