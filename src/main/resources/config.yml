@@ -1,0 +1,17 @@
+server_pack:
+  url: ""
+  hash: ""
+  apply_on_join: true #apply on join, if false players can apply it manually with /texturepack
+
+geyser_players: true # Enable when using GeyserMC
+
+messages:
+  no_console: "&cOnly players can use this command"
+  no_permission: "&cYou do not have permission to use this command."
+  player_applied: "&aYou have applied the texture pack!"
+  no_special_pack: "&cThis server does not have a special custom texture pack."
+  command_block_onjoin: "&cThe texture pack is set to apply on join, you cannot apply it manually."
+  geyser_players: "&cBedrock players cannot use this command."
+  config_reloaded: "&aConfiguration reloaded successfully!"
+  send_player_offline: "&cThat player is not online."
+  send_player: "&aYou have sent the texture pack to &e{player}&a!"

@@ -7,4 +7,14 @@ channels:
   custompack:main:
 permissions:
   custompack.admin:
+    description: Allows the player to use the reload command
     default: op
+  custompack.texturepack:
+    description: Allows the player to use the texturepack command
+commands:
+  texturepack:
+    description: Apply or toggle the texture pack
+  custompack:
+    description: Admin command for CustomPack
+    aliases: [cp]
+    usage: /cp <reload|version|send>

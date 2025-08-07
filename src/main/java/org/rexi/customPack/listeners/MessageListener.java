@@ -6,12 +6,13 @@ import org.rexi.customPack.CustomPack;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
-public class PluginMessageListener implements PluginMessageListener {
+public class MessageListener implements PluginMessageListener {
 
     private final CustomPack plugin;
 
-    public PluginMessageListener(CustomPack plugin) {
+    public MessageListener(CustomPack plugin) {
         this.plugin = plugin;
     }
 
@@ -21,21 +22,16 @@ public class PluginMessageListener implements PluginMessageListener {
 
         try (DataInputStream input = new DataInputStream(new ByteArrayInputStream(message))) {
             String action = input.readUTF();
-
             if (action.equals("SET_PACK")) {
                 String url = input.readUTF();
                 String hash = input.readUTF();
                 String reason = input.readUTF();
 
-                plugin.getLogger().info("Aplicando resource pack a " + player.getName() + " (motivo: " + reason + ")");
-                plugin.getLogger().info("URL: " + url);
-                plugin.getLogger().info("SHA1: " + hash);
-
-                player.setResourcePack(url, hash.isEmpty() ? null : hash.getBytes());
+                plugin.getLogger().info("Aplicando pack global a " + player.getName() + " (motivo: " + reason + ")");
+                player.setResourcePack(url, hash.isBlank() ? null : hash.getBytes());
             }
-
         } catch (IOException e) {
-            plugin.getLogger().warning("Error al leer el mensaje del canal de plugin.");
+            plugin.getLogger().warning("Error leyendo el mensaje del canal de plugin.");
             e.printStackTrace();
         }
     }

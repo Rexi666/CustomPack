@@ -1,0 +1,48 @@
+package org.rexi.customPack.commands;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.rexi.customPack.CustomPack;
+
+public class TexturePackCommand implements CommandExecutor {
+
+    private final CustomPack plugin;
+
+    public TexturePackCommand(CustomPack plugin) {
+        this.plugin = plugin;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.no_console", "&cOnly players can use this command")));
+            return true;
+        }
+
+        if (!sender.hasPermission("custompack.texturepack")) {
+            sender.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.no_permission", "&cYou do not have permission to use this command.")));
+            return true;
+        }
+
+        if (player.getName().contains(".") && plugin.getConfig().getBoolean("geyser_players")) {
+            sender.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.geyser_players", "&cBedrock players cannot use this command.")));
+            return true;
+        }
+
+        String url = plugin.getServerPackUrl();
+        String hash = plugin.getServerPackHash();
+        boolean applyOnJoin = plugin.isApplyOnJoinEnabled();
+
+        if (url != null && !url.isBlank() && !applyOnJoin) {
+            player.setResourcePack(url, hash.isBlank() ? null : hash.getBytes());
+            player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.player_applied", "&aYou have applied the texture pack!")));
+        } else if (applyOnJoin) {
+            player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.command_block_onjoin", "&cThe texture pack is set to apply on join, you cannot apply it manually.")));
+        } else {
+            player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.no_special_pack", "&cThis server does not have a special custom texture pack.")));
+        }
+        return true;
+    }
+}
