@@ -1,0 +1,10 @@
+name: CustomPack
+version: '1.0'
+main: org.rexi.customPack.CustomPack
+api-version: '1.18'
+author: Rexi666
+channels:
+  custompack:main:
+permissions:
+  custompack.admin:
+    default: op
