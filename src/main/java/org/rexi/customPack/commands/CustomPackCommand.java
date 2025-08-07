@@ -33,7 +33,7 @@ public class CustomPackCommand implements TabExecutor {
 
         switch (args[0].toLowerCase()) {
             case "reload" -> {
-                plugin.reloadConfig();
+                plugin.reloadsConfig();
                 sender.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.config_reloaded", "&aConfiguration reloaded successfully!")));
             }
             case "version" -> {

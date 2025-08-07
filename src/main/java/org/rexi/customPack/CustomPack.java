@@ -6,23 +6,15 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.rexi.customPack.commands.CustomPackCommand;
 import org.rexi.customPack.commands.TexturePackCommand;
 import org.rexi.customPack.listeners.MessageListener;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import org.rexi.customPack.listeners.PlayerJoin;
 
 public final class CustomPack extends JavaPlugin {
 
     public FileConfiguration config;
-    private final Set<UUID> playersWithLocalPack = new HashSet<>();
 
     @Override
     public void onEnable() {
@@ -35,6 +27,8 @@ public final class CustomPack extends JavaPlugin {
         getCommand("texturepack").setExecutor(new TexturePackCommand(this));
         getCommand("custompack").setExecutor(new CustomPackCommand(this));
 
+        Bukkit.getPluginManager().registerEvents(new PlayerJoin(this), this);
+
         Bukkit.getConsoleSender().sendMessage(Component.text("CustomPack has been enabled!").color(NamedTextColor.GREEN));
         Bukkit.getConsoleSender().sendMessage(Component.text("Thank you for using Rexi666 plugins :D").color(NamedTextColor.BLUE));
     }
@@ -42,8 +36,6 @@ public final class CustomPack extends JavaPlugin {
     @Override
     public void onDisable() {
         getServer().getMessenger().unregisterIncomingPluginChannel(this, "custompack:main");
-
-        playersWithLocalPack.clear();
 
         Bukkit.getConsoleSender().sendMessage(Component.text("CustomPack has been disabled!").color(NamedTextColor.RED));
         Bukkit.getConsoleSender().sendMessage(Component.text("Thank you for using Rexi666 plugins :D").color(NamedTextColor.BLUE));
@@ -74,23 +66,8 @@ public final class CustomPack extends JavaPlugin {
         return data;
     }
 
-    public void requestGlobalPack(Player player, String reason) {
-        try {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            DataOutputStream out = new DataOutputStream(output);
-
-            out.writeUTF("RequestGlobalPack");
-            out.writeUTF(reason);
-
-            player.sendPluginMessage(this, "custompack:main", output.toByteArray());
-            getLogger().info("Requesting for global pack for " + player.getName() + " (reason: " + reason + ")");
-        } catch (IOException e) {
-            getLogger().warning("Global pack couldnt been requested " + player.getName());
-            e.printStackTrace();
-        }
-    }
-
-    public Set<UUID> getPlayersWithLocalPack() {
-        return playersWithLocalPack;
+    public void reloadsConfig() {
+        reloadConfig();
+        config = getConfig();
     }
 }

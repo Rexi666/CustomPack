@@ -6,9 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.rexi.customPack.CustomPack;
 
-import java.util.Set;
-import java.util.UUID;
-
 public class TexturePackCommand implements CommandExecutor {
 
     private final CustomPack plugin;
@@ -41,17 +38,8 @@ public class TexturePackCommand implements CommandExecutor {
 
         if (serverpackenabled) {
             if (url != null && !url.isBlank() && !applyOnJoin) {
-                Set<UUID> toggled = plugin.getPlayersWithLocalPack();
-                if (toggled.contains(player.getUniqueId())) {
-                    toggled.remove(player.getUniqueId());
-                    player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.special_pack_removed", "&aYou have removed the special texture pack!")));
-                    plugin.requestGlobalPack(player, "removed special pack");
-                    return true;
-                } else {
-                    toggled.add(player.getUniqueId());
-                    player.setResourcePack(url, hash.isBlank() ? null : plugin.hexStringToByteArray(hash));
-                    player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.player_applied_command", "&aYou have applied the texture pack, use the command again to disable the special texture pack!")));
-                }
+                player.setResourcePack(url, hash.isBlank() ? null : plugin.hexStringToByteArray(hash));
+                player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.player_applied", "&aYou have applied the texture pack!")));
             } else if (applyOnJoin) {
                 player.sendMessage(plugin.deserialize(plugin.getConfig().getString("messages.command_block_onjoin", "&cThe texture pack is set to apply on join, you cannot apply it manually.")));
             }

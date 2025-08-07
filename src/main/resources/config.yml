@@ -8,11 +8,13 @@ server_pack:
 
 geyser_players: true # Enable when using GeyserMC
 
+kick_if_failed: true # Kick players if the texture pack fails to apply
+kick_if_declined: true # Kick players if they decline the texture pack
+
 messages:
   no_console: "&cOnly players can use this command"
   no_permission: "&cYou do not have permission to use this command."
   player_applied: "&aYou have applied the texture pack!"
-  player_applied_command: "&aYou have applied the texture pack, use the command again to disable the special texture pack!"
   no_special_pack: "&cThis server does not have a special custom texture pack."
   special_pack_removed: "&aYou have removed the special texture pack!"
   command_block_onjoin: "&cThe texture pack is set to apply on join, you cannot apply it manually."
@@ -20,3 +22,5 @@ messages:
   config_reloaded: "&aConfiguration reloaded successfully!"
   send_player_offline: "&cThat player is not online."
   send_player: "&aYou have sent the texture pack to &e{player}&a!"
+  decline_texturepack: "&cYou have declined the texture pack request. Enable it if you want to play on this server."
+  failed_texturepack: "&cFailed to apply the texture pack. Please try again later. If the problem persists, contact the server administrator."
