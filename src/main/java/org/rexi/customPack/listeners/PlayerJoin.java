@@ -27,6 +27,8 @@ public class PlayerJoin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
+        if (player.getName().contains(".") && plugin.getConfig().getBoolean("geyser_players")) return;
+
         if (plugin.config.getBoolean("server_pack.enabled") && plugin.config.getBoolean("server_pack.apply_on_join")) {
             String url = plugin.config.getString("server_pack.url", "");
             String hash = plugin.config.getString("server_pack.hash", "");
